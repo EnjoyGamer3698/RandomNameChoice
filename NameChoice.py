@@ -3,12 +3,8 @@ import customtkinter as ctk
 from PIL import ImageTk
 from PIL import Image
 import  random
+from tkinter import messagebox as msgbox
 #https://customtkinter.tomschimansky.com/documentation/widgets/button
-def lr():
-    global stu
-    stu = ["张三","李四","王五"]
-    列表.delete(0,tk.END)
-    名字.configure(text=' ')
 def choice():
     a = random.choice(stu)
     列表.insert(tk.END,a)
@@ -28,8 +24,13 @@ def get_img(filename, width, height):
     im = ImageTk.PhotoImage(im)
     return im
 def rest():
-    tk.messagebox.showinfo('你好','是这样的')
-    pass
+    global stu
+    try:
+        with open('luckydog.dll','r') as f:
+            stu=f.read().split()
+    except:
+        stu=["张三","李四","王五"]
+
 
 # tk 窗口基本配置
 r = ctk.CTk()
@@ -44,11 +45,21 @@ y = int((r.winfo_screenheight() - r.winfo_reqheight()) / 3)
 #将窗口居中显示
 r.geometry("+{}+{}".format(x, y))
 
-# 设置背景图片
-背景 = ctk.CTkCanvas(r, width=1000, height=600)
-图片 = get_img('./background.jpg', 1000, 600)
-背景.create_image(340, 200, image=图片)
-背景.place(x=0,y=0)
+#读取设置
+try:
+    with open('setting.dll','r') as f:
+        setting=f.read()     #待修改
+except:
+    msgbox.showinfo('欢迎','感谢您使用命运抉择2，请记得查看使用说明')
+    a={}
+    with open('setting.dll','w') as f:
+        f.write(str(a))
+
+### 设置背景图片
+##背景 = ctk.CTkCanvas(r, width=1000, height=600)
+##图片 = get_img('./background.jpg', 1000, 600)
+##背景.create_image(340, 200, image=图片)
+##背景.place(x=0,y=0)
 
 # 控件配置
 文字 = ctk.CTkLabel(r,text='被抽取到的幸运儿是:',font=('站酷文艺体',28),fg_color="transparent",bg_color="transparent")
@@ -80,10 +91,10 @@ r.geometry("+{}+{}".format(x, y))
 
 #菜单栏
 lst=tk.Menu(r)
-lst.add_command()
+lst.add_cascade(label='基本')
 
 #提供列表
-lr()
+rest()
 
 #测试区
 
